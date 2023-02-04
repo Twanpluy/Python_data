@@ -5,6 +5,7 @@ import csv
 import time
 import os
 
+# TODO: TEST it out
 
 class LinkedIn_Scrapper:
     # Variable for the links
