@@ -1,0 +1,7 @@
+-- This is a project to scrape a indeed
+-- Export to CSV and database
+-- Load in powerbi
+-- Add geo locations
+-- find rentable house in the neighbourhood.
+
+-- If scripts work, start using airflow etl to run daily.

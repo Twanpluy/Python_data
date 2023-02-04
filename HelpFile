@@ -1,0 +1,10 @@
+-- powershell set rights
+Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy Unrestricted
+
+
+Better Comments
+* Important information is highlighted
+! Depracated method, do not CurrentUser
+? Should this method be exposted in the API
+TODO: refactor
+@param: parameters for the functions
