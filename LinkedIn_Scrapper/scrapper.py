@@ -45,15 +45,16 @@ class LinkedIn_Scrapper:
         soup = BeautifulSoup(response.content, "html.parser")
 
         # export html to file for testing
-        with open("datastore/linkedin.html", "w") as f:
+        with open("datastore/linkedin.html", "w",encoding='utf-8') as f:
             f.write(str(soup))
             f.close()
 
 
         # Find all the job cards
-        Find_All_Job = soup.find_all("div", class_="base-card relative w-full hover:no-underline focus:no-underline base-card--link base-search-card base-search-card--link job-search-card")
+        # old search div class_="base-card relative w-full hover:no-underline focus:no-underline base-card--link base-search-card base-search-card--link job-search-card
+        Find_All_Job = soup.find_all("ul","scaffold-layout__list-container")
         #write find all job in cards to file
-        with open("datastore/find_job.html", "w") as f:
+        with open("datastore/find_job.html", "w",encoding='utf-8') as f:
             f.write(str(Find_All_Job))
             f.close()
 
