@@ -5,7 +5,7 @@ def main():
         area = input("Enter area search: ")
         scrapper = LinkedIn_Scrapper(job, area)
         jobs = scrapper.scrape_linkedin()
-        # scrapper.save_to_csv(jobs)
+        scrapper.save_to_json(jobs)
 
 if __name__ == "__main__":
     main()

@@ -4,17 +4,20 @@ import requests
 import csv
 import time
 import os
+import datetime
 import json
 # TODO: TEST it out
 
 class LinkedIn_Scrapper:
+    logging.basicConfig(level=logging.INFO)
     # Variable for the links
     URL = "https://www.linkedin.com/jobs/search/?keywords="
-    FILEPATH = ""
+    FILEPATH = "datastore/"
 
     def __init__(self,job,area):
         self.job = job
         self.area = area
+        
 
     # function Inputs for the job (job title) and area to search for (country))
     def input_search(self) -> str:
@@ -89,9 +92,15 @@ class LinkedIn_Scrapper:
             return jobs
 
     # function to save the data to a csv file
-    def save_to_csv(self, jobs):
+    def save_to_json(self, jobs):
         """Save to json file"""
-        file = open(f"{self.job}.json", "w")
+        date = datetime.datetime.now()
+
+        complete_file_path = f"{self.FILEPATH}{self.job}_{self.area}_{date}"
+        complete_file_path= complete_file_path.replace(" ", "_").replace(":", "_").replace(".", "_").replace("-", "_")
+
+        logging.info(f"{complete_file_path}")
+        file = open(f"{complete_file_path}.json", "w")
         json.dump(jobs, file, indent=4)
 
         
