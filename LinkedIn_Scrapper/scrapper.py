@@ -6,7 +6,7 @@ import time
 import os
 import datetime
 import json
-
+# TODO: fix job_id
 class LinkedIn_Scrapper:
     logging.basicConfig(level=logging.INFO)
     # Variable for the links
