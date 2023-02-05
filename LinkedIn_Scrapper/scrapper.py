@@ -81,10 +81,15 @@ class LinkedIn_Scrapper:
             if job.find("span", class_="job-search-card__salary") is not None:
                 salary = job.find("span", class_="job-search-card__salary").text.strip()
             else:
-                salary = "No salary found"                   
+                salary = "No salary found"     
 
-            if job.find("span", class_="job-search-card__listdate") is not None:
-                job_id = job.find("span", class_="job-search-card__listdate").text.strip()
+            # print(f"job id: { str(job.find('div',class_='base-card relative w-full hover:no-underline focus:no-underline base-card--link base-search-card base-search-card--link job-search-card'))}")
+            if job.find("div", class_="base-card relative w-full hover:no-underline focus:no-underline base-card--link base-search-card base-search-card--link job-search-card") is not None:
+                logging.warning("Job id found")
+                with open("datastore/find_job_id.html", "w", encoding="utf-8") as f:
+                    f.write(str(job.find("div", class_="base-card relative w-full hover:no-underline focus:no-underline base-card--link base-search-card base-search-card--link job-search-card")))
+                    f.close()
+                job_id = job.find("span", class_="base-card relative w-full hover:no-underline focus:no-underline base-card--link base-search-card base-search-card--link job-search-card")["data-entity-urn"]
             else:
                 job_id = "No job id found"
 
