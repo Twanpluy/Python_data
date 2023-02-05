@@ -23,27 +23,42 @@ class LinkedIn_Scrapper:
     def input_search(self) -> str:
         """Input the job and area to search for"""
         self.job = str(input("Enter job search: ")).replace(" ", "%20")
+        logging.info(f"The following job will be searched: \n {self.job}")
         self.area = str(input("Enter area search: ")).replace(" ", "%20")
-        
+        logging.info(f"The following area will be searched: \n {self.area}")
+
     # Example: https://www.linkedin.com/jobs/search/?keywords=software%20engineer&location=United%20States
     # @param: create_url job (string), area (string) parameters for the functions
     def create_url(self) -> str:
         """Create the url for the job search, input job (string) and area (string) """
-        Search_URL = f"{self.URL}{self.job}&location={self.area}"
+        job = self.job.replace(" ", "%20")
+        area = self.area.replace(" ", "%20")
+        Search_URL = f"{self.URL}{job}&location={area}"
         return Search_URL
 
     # function the scraper
     def scrape_linkedin(self):
         """Scrape the linkedin jobs page and return a list of jobs"""
+        logging.info(f"The following url will be used: \n {self.create_url()}")
         jobs = []
         response = requests.get(self.create_url())
         soup = BeautifulSoup(response.content, "html.parser")
 
+        # export html to file for testing
+        with open("datastore/linkedin.html", "w") as f:
+            f.write(str(soup))
+            f.close()
+
+
         # Find all the job cards
-        Find_Job = soup.find_all("div", class_="base-card relative w-full hover:no-underline focus:no-underline base-card--link base-search-card base-search-card--link job-search-card")
+        Find_All_Job = soup.find_all("div", class_="base-card relative w-full hover:no-underline focus:no-underline base-card--link base-search-card base-search-card--link job-search-card")
+        #write find all job in cards to file
+        with open("datastore/find_job.html", "w") as f:
+            f.write(str(Find_All_Job))
+            f.close()
 
         # Loop through the job cards and extract the data
-        for job in Find_Job:
+        for job in Find_All_Job:
             if job.find("span", class_="job-search-card__salary") is not None:
                 job_id =  job.find("div", class_="data-job-id")
             else:
@@ -95,10 +110,8 @@ class LinkedIn_Scrapper:
     def save_to_json(self, jobs):
         """Save to json file"""
         date = datetime.datetime.now()
-
         complete_file_path = f"{self.FILEPATH}{self.job}_{self.area}_{date}"
-        complete_file_path= complete_file_path.replace(" ", "_").replace(":", "_").replace(".", "_").replace("-", "_")
-
+        complete_file_path = complete_file_path.replace(" ", "_").replace(":", "_").replace(".", "_").replace("-", "_")
         logging.info(f"{complete_file_path}")
         file = open(f"{complete_file_path}.json", "w")
         json.dump(jobs, file, indent=4)
