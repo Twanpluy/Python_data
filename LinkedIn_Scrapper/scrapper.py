@@ -4,7 +4,7 @@ import requests
 import csv
 import time
 import os
-
+import json
 # TODO: TEST it out
 
 class LinkedIn_Scrapper:
@@ -40,11 +40,33 @@ class LinkedIn_Scrapper:
 
         # Loop through the job cards and extract the data
         for job in Find_Job:
-            job_id =  job.find("div", class_="data-job-id")
-            title = job.find("h3", class_="base-search-card__title").text.strip()
-            company = job.find("h4", class_="base-search-card__subtitle").text.strip()
-            location = job.find("span", class_="job-search-card__location").text.strip()
-            salary = job.find("span", class_="job-search-card__salary").text.strip()
+            if job.find("span", class_="job-search-card__salary") is not None:
+                job_id =  job.find("div", class_="data-job-id")
+            else:
+                job_id = "No job id"  
+            
+            if job.find("h3", class_="base-search-card__title") is not None:
+                title = job.find("h3", class_="base-search-card__title").text.strip()
+            else:
+                title = "No title"          
+            # title = job.find("h3", class_="base-search-card__title").text.strip()
+
+            if job.find("h4", class_="base-search-card__subtitle") is not None:
+                company = job.find("h4", class_="base-search-card__subtitle").text.strip()
+            else:
+                company = "No company"    
+
+            # company = job.find("h4", class_="base-search-card__subtitle").text.strip()
+            if job.find("span", class_="job-search-card__location") is not None:
+                location = job.find("span", class_="job-search-card__location").text.strip()
+            else:
+                location = "No location"    
+            # location = job.find("span", class_="job-search-card__location").text.strip()
+            if job.find("span", class_="job-search-card__salary") is not None:
+                salary = job.find("span", class_="job-search-card__salary").text.strip()
+            else:
+                salary = "No salary"    
+            # salary = job.find("span", class_="job-search-card__salary").text.strip()
 
         # Get job description for each job, need to open the job page tab
             job_link = job.find("a", class_="base-card__full-link")["href"]
@@ -52,7 +74,7 @@ class LinkedIn_Scrapper:
             job_response = requests.get(job_link)
             time.sleep(0.3)
             job_soup = BeautifulSoup(job_response.content, "html.parser")
-            job_soup = find("div", class_="show-more-less-html__markup show-more-less-html__markup--clamp-after-5") 
+            job_soup.find("div", class_="show-more-less-html__markup show-more-less-html__markup--clamp-after-5") 
             job_description = job_soup.find("div", class_="show-more-less-html__markup show-more-less-html__markup--clamp-after-5").text.strip()  
             jobs.append({
                 "Job ID": job_id,
@@ -67,13 +89,13 @@ class LinkedIn_Scrapper:
 
 
     # function to save the data to a csv file
-    def save_to_csv(jobs) -> None:
-        """Save the jobs to a csv file"""
-        file = open("jobs.csv", mode="w")
-        writer = csv.writer(file)
-        writer.writerow(["Job ID", "Title", "Company", "Location", "Salary", "Description"])
-        for job in jobs:
-            writer.writerow(list(job.values()))
+    # def save_to_csv(jobs) -> None:
+    #     """Save the jobs to a csv file"""
+    #     file = open("jobs.csv", mode="w")
+    #     writer = csv.writer(file)
+    #     writer.writerow(["Job ID", "Title", "Company", "Location", "Salary", "Description"])
+    #     for job in jobs:
+    #         writer.writerow(list(job.values()))
         
 
 
