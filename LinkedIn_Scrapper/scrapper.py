@@ -10,6 +10,7 @@ import json
 class LinkedIn_Scrapper:
     # Variable for the links
     URL = "https://www.linkedin.com/jobs/search/?keywords="
+    FILEPATH = ""
 
     def __init__(self,job,area):
         self.job = job
@@ -87,15 +88,12 @@ class LinkedIn_Scrapper:
             })
             return jobs
 
-
     # function to save the data to a csv file
-    # def save_to_csv(jobs) -> None:
-    #     """Save the jobs to a csv file"""
-    #     file = open("jobs.csv", mode="w")
-    #     writer = csv.writer(file)
-    #     writer.writerow(["Job ID", "Title", "Company", "Location", "Salary", "Description"])
-    #     for job in jobs:
-    #         writer.writerow(list(job.values()))
+    def save_to_csv(self, jobs):
+        """Save to json file"""
+        file = open(f"{self.job}.json", "w")
+        json.dump(jobs, file, indent=4)
+
         
 
 
