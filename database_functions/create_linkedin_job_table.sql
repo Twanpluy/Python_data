@@ -1,7 +1,7 @@
 
 
 create table if not exists Linkedin_job(
-    id int primary key,
+    id SERIAL primary key,
     job_id varchar(255),
     job_title varchar(255),
     company_name varchar(255),
