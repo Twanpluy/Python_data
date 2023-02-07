@@ -11,7 +11,7 @@ class LinkedIn_Scrapper:
     logging.basicConfig(level=logging.INFO)
     # Variable for the links
     URL = "https://www.linkedin.com/jobs/search/?keywords="
-    FILEPATH = "datastore/"
+    FILEPATH = "datastore/linkedin/"
 
     def __init__(self, job, area):
         self.job = job
